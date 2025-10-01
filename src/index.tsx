@@ -1,15 +1,24 @@
+import '@mantine/core/styles.css';
+import 'normalize.css';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { MantineProvider as Ma } from '@mantine/core';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <App />
+    <Ma defaultColorScheme="dark">
+    <BrowserRouter basename="/mp2">
+      <App />
+    </BrowserRouter>
+    </Ma>
   </React.StrictMode>
 );
 
