@@ -1,3 +1,4 @@
+/* styles.module.css */
 .header {
   height: 60px;
   background-color: var(--mantine-color-dark-7);
@@ -6,20 +7,33 @@
 
 .inner {
   display: flex;
-  justify-content: space-between;  
-  align-items: center;     
+  align-items: center; 
+  gap: 8px;
   height: 100%;
+}
+
+.icon {
+  font-size: 3rem;
+  color: var(--mantine-color-white);
+  border: 1px solid var(--mantine-color-white);
+  border-radius: 50%; 
+  padding: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .title {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--mantine-color-white);
+  margin: 0;
 }
 
 .links {
   display: flex;
   gap: 12px;
+  margin-left: auto; 
 }
 
 .link {

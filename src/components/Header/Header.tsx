@@ -1,4 +1,5 @@
 import React from 'react';
+import { GiHotMeal } from 'react-icons/gi';
 import { Link, useLocation } from 'react-router-dom';
 import { Container, Text } from '@mantine/core';
 import styles from './Header.module.css';
@@ -26,7 +27,8 @@ export function Header() {
   return (
     <header className={styles.header}>
       <Container size="md" className={styles.inner}>
-        <Text className={styles.title}>Meal Finder</Text>
+        <GiHotMeal className={styles.icon} />
+        <Text className={styles.title}>Food Finder</Text>
 
         <nav className={styles.links} aria-label="Main navigation">
           {items}
