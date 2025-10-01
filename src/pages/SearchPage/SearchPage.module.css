@@ -1,14 +1,14 @@
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;      /* vertical centering */
-  align-items: center;          /* horizontal centering */
+  justify-content: center;     
+  align-items: center;         
   margin: 2rem auto;
-  padding: 2rem;                /* spacing inside the border */
-  max-width: 800px;             /* container width */
-  min-height: 300px;            /* ensures enough height to center content */
+  padding: 2rem;                
+  max-width: 800px;             
+  min-height: 300px;            
   border: 1px solid var(--mantine-color-dark-5);
-  border-radius: 12px;          /* rounded edges */
+  border-radius: 12px;          
   background-color: var(--mantine-color-dark-6);
 }
 
