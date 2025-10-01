@@ -1,0 +1,15 @@
+.controlsGroup {
+  width: 100%;
+  gap: 1rem;
+}
+
+.input {
+  width: 100%;
+}
+
+.sortContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  color: var(--mantine-color-white);
+}

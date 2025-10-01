@@ -26,7 +26,7 @@ export function Header() {
   return (
     <header className={styles.header}>
       <Container size="md" className={styles.inner}>
-        <Text className={styles.title}>My Website</Text>
+        <Text className={styles.title}>Meal Finder</Text>
 
         <nav className={styles.links} aria-label="Main navigation">
           {items}

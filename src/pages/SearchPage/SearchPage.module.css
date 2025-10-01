@@ -1,0 +1,18 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;      /* vertical centering */
+  align-items: center;          /* horizontal centering */
+  margin: 2rem auto;
+  padding: 2rem;                /* spacing inside the border */
+  max-width: 800px;             /* container width */
+  min-height: 300px;            /* ensures enough height to center content */
+  border: 1px solid var(--mantine-color-dark-5);
+  border-radius: 12px;          /* rounded edges */
+  background-color: var(--mantine-color-dark-6);
+}
+
+.title {
+  margin-top: 0;
+  color: var(--mantine-color-white);
+}
