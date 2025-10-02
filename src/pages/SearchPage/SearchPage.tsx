@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import styles from './SearchPage.module.css';
 import { SearchBox } from '../../components/SearchBox/SearchBox';
-import { searchMealByFirstLetter } from '../../api/mealApi';
+import { searchMealsByName } from '../../api/mealApi';
 import { Meal } from '../../api/types';
-import { Card, Image, Text, Group } from '@mantine/core';
+import { Card, Image, Text, Group, Loader } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import { useMealList } from '../../components/MealListContext/MealListContext';
 
@@ -14,9 +14,9 @@ function SearchPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortKey, setSortKey] = useState<'name' | 'numIngredients'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [firstLetter, setFirstLetter] = useState('');
   const [allMeals, setAllMeals] = useState<Meal[]>([]);
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
   const { setMealList } = useMealList();
 
@@ -24,19 +24,45 @@ function SearchPage() {
     setMealList(filteredMeals);
   }, [filteredMeals, setMealList]);
 
-  // API calls with first letter only when needed
+  // Debounced name-search: call API only after typing pauses
   useEffect(() => {
-    async function fetchMeals() {
-      if (firstLetter === '') return;
-      try {
-        const results = await searchMealByFirstLetter(firstLetter);
-        setAllMeals(results);
-      } catch (err) {
-        console.error('Error fetching meals:', err);
-      }
+    const q = searchTerm.trim();
+    if (q.length === 0) {
+      setAllMeals([]);
+      setFilteredMeals([]);
+      return;
     }
-    fetchMeals();
-  }, [firstLetter]);
+
+    let cancelled = false;
+    const DEBOUNCE_MS = 150;
+    setIsSearching(true);
+    const timer = setTimeout(async () => {
+      try {
+        const results = await searchMealsByName(q);
+        if (!cancelled) {
+          // Merge new results into the existing allMeals array without removing current items
+          setAllMeals(prev => {
+            const map = new Map<string, Meal>();
+            // keep existing items
+            prev.forEach(m => map.set(m.id, m));
+            // add/overwrite with new results from API
+            results.forEach(m => map.set(m.id, m));
+            return Array.from(map.values());
+          });
+        }
+      } catch (err) {
+        console.error('Error searching by name:', err);
+      } finally {
+        if (!cancelled) setIsSearching(false);
+      }
+    }, DEBOUNCE_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      setIsSearching(false);
+    };
+  }, [searchTerm]);
 
   // Filtering & Sorting Locally
   useEffect(() => {
@@ -69,14 +95,7 @@ function SearchPage() {
   }, [searchTerm, sortKey, sortOrder, allMeals]);
 
   const handleSearchTermChange = (term: string) => {
-    if (term.length > 0) {
-      const newFirstLetter = term[0].toLowerCase();
-      if (newFirstLetter !== firstLetter) {
-        setFirstLetter(newFirstLetter);
-      }
-    }
     if (term.length === 0) {
-      setFirstLetter('');
       setAllMeals([]);
       setFilteredMeals([]);
     }
@@ -112,6 +131,12 @@ function SearchPage() {
       </div>
 
       <div className={styles.results}>
+        {isSearching && (
+          <div className={styles.searchLoader}>
+            <Loader />
+          </div>
+        )}
+
         {filteredMeals.length > 0 ? (
           filteredMeals.map((meal) => (
             <Card
