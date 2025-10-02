@@ -3,6 +3,9 @@ import styles from './GalleryPage.module.css';
 import { filterMealsByArea } from '../../api/mealApi';
 import { Meal } from '../../api/types';
 import { SimpleGrid, Card, Image, Text, Group, Container } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { useMealList } from '../../components/MealListContext/MealListContext';
+
 
 interface GalleryPageProps {
   areasList: { name: string }[];
@@ -11,6 +14,12 @@ interface GalleryPageProps {
 function GalleryPage({ areasList }: GalleryPageProps) {
   const [meals, setMeals] = useState<Meal[]>([]);
   const [currentCategory, setCurrentCategory] = useState<string>('');
+  const navigate = useNavigate();
+  const { setMealList } = useMealList();
+
+  useEffect(() => {
+    setMealList(meals);
+  }, [meals, setMealList]);
 
   useEffect(() => {
     if (areasList && areasList.length > 0) {
@@ -29,6 +38,10 @@ function GalleryPage({ areasList }: GalleryPageProps) {
       console.log('filterMealsByArea result:', filtered);
       setMeals(filtered);
     });
+  };
+
+  const handleCardClick = (id: string) => {
+    navigate(`/detail/${id}`);
   };
 
   return (
@@ -53,7 +66,7 @@ function GalleryPage({ areasList }: GalleryPageProps) {
       <Container size="md" className={styles.gridContainer}>
         <SimpleGrid cols={3} spacing="md" className={styles.grid}>
           {meals.map((meal) => (
-            <Card key={meal.id} className={styles.card} withBorder>
+            <Card key={meal.id} className={styles.card} withBorder onClick={() => handleCardClick(meal.id)}>
               <div className={styles.imageWrapper}>
                 <Image
                   src={meal.thumbnail}

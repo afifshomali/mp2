@@ -7,6 +7,7 @@ import { MantineProvider as Ma } from '@mantine/core';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { MealListProvider } from './components/MealListContext/MealListContext';
 
 
 const root = ReactDOM.createRoot(
@@ -16,7 +17,9 @@ root.render(
   <React.StrictMode>
     <Ma defaultColorScheme="dark">
     <BrowserRouter basename="/mp2">
-      <App />
+      <MealListProvider>
+        <App />
+      </MealListProvider>
     </BrowserRouter>
     </Ma>
   </React.StrictMode>

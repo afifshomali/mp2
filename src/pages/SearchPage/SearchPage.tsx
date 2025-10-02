@@ -5,6 +5,9 @@ import { SearchBox } from '../../components/SearchBox/SearchBox';
 import { searchMealByFirstLetter } from '../../api/mealApi';
 import { Meal } from '../../api/types';
 import { Card, Image, Text, Group } from '@mantine/core';
+import { useNavigate } from 'react-router-dom';
+import { useMealList } from '../../components/MealListContext/MealListContext';
+
 
 
 function SearchPage() {
@@ -14,6 +17,12 @@ function SearchPage() {
   const [firstLetter, setFirstLetter] = useState('');
   const [allMeals, setAllMeals] = useState<Meal[]>([]);
   const [filteredMeals, setFilteredMeals] = useState<Meal[]>([]);
+  const navigate = useNavigate();
+  const { setMealList } = useMealList();
+
+  useEffect(() => {
+    setMealList(filteredMeals);
+  }, [filteredMeals, setMealList]);
 
   // API calls with first letter only when needed
   useEffect(() => {
@@ -83,6 +92,10 @@ function SearchPage() {
     setSortOrder(order);
   };
 
+  const handleCardClick = (id: string) => {
+    navigate(`/detail/${id}`);
+  };
+
   return (
     <>
       <div className={styles.container}>
@@ -107,6 +120,7 @@ function SearchPage() {
               padding="md"
               radius="md"
               withBorder
+              onClick={() => handleCardClick(meal.id)}
               className={styles.mealCard}
             >
               <Group wrap="nowrap" align="center">

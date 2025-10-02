@@ -22,7 +22,7 @@ function App() {
       <Routes>
         <Route path="/" element={<SearchPage />} />
         <Route path="/gallery" element={<GalleryPage areasList={areasList} />} />
-        <Route path="/detail/:id" element={<DetailPage />} />
+        <Route path="/detail/:id" element={<DetailPage/>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </div>
